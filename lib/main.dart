@@ -1,9 +1,7 @@
+import 'package:cctv_medan/player.dart';
 import 'package:cctv_medan/providers/CctvState.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'models/Cctv.dart';
 
 void main() => runApp(MyApp());
 
@@ -52,7 +50,15 @@ class MyHomePage extends StatelessWidget {
               itemBuilder: (context, index) => ListTile(
                 title: Text(listCctv[index].name),
                 onTap: () {
-
+                  var data = listCctv[index];
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Player(
+                        title: data.name,
+                        url: data.url,
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

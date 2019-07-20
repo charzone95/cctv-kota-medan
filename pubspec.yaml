@@ -13,6 +13,7 @@ dependencies:
 
   provider: ^3.0.0+1
   dio: ^2.1.13
+  video_player: ^0.10.1+5
 
 dev_dependencies:
   flutter_test:
