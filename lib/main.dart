@@ -1,3 +1,4 @@
+import 'package:cctv_medan/CctvList.dart';
 import 'package:cctv_medan/player.dart';
 import 'package:cctv_medan/providers/CctvState.dart';
 import 'package:flutter/material.dart';
@@ -12,56 +13,54 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.grey,
+        backgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          brightness: Brightness.dark,
+          color: Color.fromARGB(255, 33, 33, 33),
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
       ),
-      home: ChangeNotifierProvider<CctvState>(
-        builder: (BuildContext context) => CctvState(),
-        child: MyHomePage(title: 'CCTV Kota Medan'),
-      ),
+      home: SplashScreen(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
 
-  final String title;
+class _SplashScreenState extends State<SplashScreen> {
+  BuildContext _context;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration(milliseconds: 1500), () {
+      Navigator.of(_context).pushReplacement(
+        MaterialPageRoute(
+            builder: (context) => ChangeNotifierProvider<CctvState>(
+                  builder: (BuildContext context) => CctvState(),
+                  child: CctvListScreen(),
+                )),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cctvState = Provider.of<CctvState>(context);
-    final listCctv = cctvState.listCctv;
-    if (listCctv.isEmpty) {
-      Future.delayed(Duration(milliseconds: 50), () {
-        cctvState.fetchCctvData();
-      });
+    if (_context == null) {
+      _context = context;
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
+      backgroundColor: Color.fromARGB(255, 33, 33, 33),
+      body: Center(
+        child: Image.asset("assets/img/logo_text.png"),
       ),
-      body: cctvState.isLoadingCctv
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: listCctv.length,
-              itemBuilder: (context, index) => ListTile(
-                title: Text(listCctv[index].name),
-                onTap: () {
-                  var data = listCctv[index];
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => Player(
-                        title: data.name,
-                        url: data.url,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
     );
   }
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-class Player extends StatefulWidget {
+class PlayerScreen extends StatefulWidget {
   final String title;
   final String url;
 
-  const Player({Key key, this.title, this.url}) : super(key: key);
+  const PlayerScreen({Key key, this.title, this.url}) : super(key: key);
 
   @override
-  _PlayerState createState() => _PlayerState();
+  _PlayerScreenState createState() => _PlayerScreenState();
 }
 
-class _PlayerState extends State<Player> {
+class _PlayerScreenState extends State<PlayerScreen> {
   VideoPlayerController _controller;
   bool _isStarted = false;
   bool _isError = false;
@@ -29,9 +29,11 @@ class _PlayerState extends State<Player> {
       }).timeout(
         Duration(seconds: 5),
         onTimeout: () {
-          setState(() {
-            _isError = true;
-          });
+          if (mounted) {
+            setState(() {
+              _isError = true;
+            });
+          }
         },
       ).catchError((error) {
         setState(() {
@@ -53,7 +55,7 @@ class _PlayerState extends State<Player> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title, style: TextStyle(color: Colors.white),),
       ),
       body: Container(
         child: Center(
