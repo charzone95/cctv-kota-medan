@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:video_player/video_player.dart';
 
 import 'components/loading_indicator.dart';
@@ -57,16 +58,37 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title, style: TextStyle(color: Colors.white),),
+        title: Text(
+          widget.title,
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Container(
         child: Center(
-          child: _isError ? Text("Gagal memutar video") : _isStarted
-              ? AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
-                )
-              : CctvLoadingIndicator(),
+          child: _isError
+              ? Text("Gagal memutar video")
+              : _isStarted
+                  ? PhotoView.customChild(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          AspectRatio(
+                            aspectRatio: _controller.value.aspectRatio,
+                            child: VideoPlayer(_controller),
+                          ),
+                          SizedBox(height: 8.0),
+                          Text("Anda dapat mencubit layar untuk memperbesar video"),
+                        ],
+                      ),
+                      childSize: Size(
+                          MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.width /
+                              _controller.value.aspectRatio + 32.0),
+                      minScale: 1.0,
+                      backgroundDecoration: BoxDecoration(color: Colors.white),
+                    )
+                  : CctvLoadingIndicator(),
         ),
       ),
     );
