@@ -4,15 +4,43 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'components/loading_indicator.dart';
+import 'models/Cctv.dart';
 
-class CctvListScreen extends StatelessWidget {
+class CctvListScreen extends StatefulWidget {
   CctvListScreen({Key key}) : super(key: key);
 
   @override
+  _CctvListScreenState createState() => _CctvListScreenState();
+}
+
+class _CctvListScreenState extends State<CctvListScreen> {
+  final _searchController = new TextEditingController();
+
+  List<Cctv> displayedList;
+
+  bool _isSearching = false;
+
+  @override
   Widget build(BuildContext context) {
+    void _filterList(String newText) {
+      final cctvState = Provider.of<CctvState>(context);
+
+      if (newText.isEmpty) {
+        displayedList = cctvState.listCctv;
+      } else {
+        displayedList = cctvState.listCctv.where((val) {
+          return val.name.toLowerCase().contains(newText.toLowerCase());
+        }).toList();
+      }
+      setState(() {});
+    }
+
     final cctvState = Provider.of<CctvState>(context);
-    final listCctv = cctvState.listCctv;
-    if (listCctv.isEmpty) {
+    if (displayedList == null) {
+      displayedList = cctvState.listCctv;
+    }
+    if (displayedList.isEmpty && !cctvState.isLoadingCctv && !cctvState.isErrorLoadCctv) {
+      print("begin to fetch");
       Future.delayed(Duration(milliseconds: 50), () {
         cctvState.fetchCctvData();
       });
@@ -20,23 +48,57 @@ class CctvListScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('CCTV Kota Medan', style: TextStyle(color: Colors.white)),
-        centerTitle: true,
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: "Cari CCTV",
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                style: TextStyle(color: Colors.white),
+                onChanged: _filterList,
+              )
+            : Text('CCTV Kota Medan', style: TextStyle(color: Colors.white)),
+        centerTitle: _isSearching ? false : true,
+        actions: <Widget>[
+          _isSearching
+              ? IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = false;
+                      _searchController.text = "";
+                      _filterList("");
+                    });
+                  })
+              : IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                    });
+                  }),
+        ],
       ),
       body: Container(
         child: Center(
           child: cctvState.isErrorLoadCctv
-              ? Text("Failed to load data")
+              ? Text("Gagal memuat data")
               : cctvState.isLoadingCctv
                   ? Center(
                       child: CctvLoadingIndicator(),
                     )
                   : ListView.builder(
-                      itemCount: listCctv.length,
+                      itemCount: displayedList.length,
                       itemBuilder: (context, index) => ListTile(
-                        title: Text(listCctv[index].name),
+                        title: Text(displayedList[index].name),
                         onTap: () {
-                          var data = listCctv[index];
+                          var data = displayedList[index];
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => PlayerScreen(

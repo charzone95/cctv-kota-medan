@@ -61,7 +61,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
       ),
       body: Container(
         child: Center(
-          child: _isError ? Text("Failed to play video.") : _isStarted
+          child: _isError ? Text("Gagal memutar video") : _isStarted
               ? AspectRatio(
                   aspectRatio: _controller.value.aspectRatio,
                   child: VideoPlayer(_controller),
