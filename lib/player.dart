@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import 'components/loading_indicator.dart';
+
 class PlayerScreen extends StatefulWidget {
   final String title;
   final String url;
@@ -64,7 +66,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   aspectRatio: _controller.value.aspectRatio,
                   child: VideoPlayer(_controller),
                 )
-              : CircularProgressIndicator(),
+              : CctvLoadingIndicator(),
         ),
       ),
     );

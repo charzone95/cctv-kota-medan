@@ -39,13 +39,14 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(milliseconds: 1500), () {
+    Future.delayed(Duration(milliseconds: 2000), () {
       Navigator.of(_context).pushReplacement(
         MaterialPageRoute(
-            builder: (context) => ChangeNotifierProvider<CctvState>(
-                  builder: (BuildContext context) => CctvState(),
-                  child: CctvListScreen(),
-                )),
+          builder: (context) => ChangeNotifierProvider<CctvState>(
+            builder: (BuildContext context) => CctvState(),
+            child: CctvListScreen(),
+          ),
+        ),
       );
     });
   }
