@@ -25,7 +25,7 @@ class CctvState with ChangeNotifier {
 
     Dio dio = new Dio();
     Response response = await dio
-        .get("http://api.charzone95.web.id/cctv-medan/")
+        .get("http://api.charzone95.web.id/cctv-medan/new-list.php")
         .catchError((error) {
       _isErrorLoadCctv = true;
     });

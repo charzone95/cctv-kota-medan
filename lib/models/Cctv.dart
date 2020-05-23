@@ -20,8 +20,8 @@ class Cctv {
   Cctv.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     url = json['url'];
-    lat = json['lat'];
-    lng = json['lng'];
+    lat = json['lat'] != null ? json['lat'].toDouble() : null;
+    lng = json['lng'] != null ? json['lng'].toDouble() : null;
     status = json['status'];
   }
 
