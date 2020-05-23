@@ -42,7 +42,6 @@ class _CctvListScreenState extends State<CctvListScreen> {
     if (displayedList.isEmpty &&
         !cctvState.isLoadingCctv &&
         !cctvState.isErrorLoadCctv) {
-      print("begin to fetch");
       Future.delayed(Duration(milliseconds: 50), () {
         cctvState.fetchCctvData();
       });
