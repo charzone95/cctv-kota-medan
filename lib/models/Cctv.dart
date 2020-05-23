@@ -1,8 +1,8 @@
 class Cctv {
   String name;
   String url;
-  int lat;
-  int lng;
+  double lat;
+  double lng;
   int status;
 
   Cctv({this.name, this.url, this.lat, this.lng, this.status});
