@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Completer<GoogleMapController> _controller = Completer();
+  BitmapDescriptor _markerIconToUse;
 
   List<Cctv> listCctv;
 
@@ -53,10 +54,25 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _createMarkerImageFromAsset(BuildContext context) async {
+    if (_markerIconToUse == null) {
+      final ImageConfiguration imageConfiguration =
+          createLocalImageConfiguration(context);
+      BitmapDescriptor.fromAssetImage(
+              imageConfiguration, 'assets/img/marker.png')
+          .then((bitmap) {
+        setState(() {
+          _markerIconToUse = bitmap;
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cctvState = Provider.of<CctvState>(context);
 
+    _createMarkerImageFromAsset(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -98,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 markerId: MarkerId(cctv.toMarkerIdName()),
                 position: LatLng(cctv.lat, cctv.lng),
                 consumeTapEvents: true,
+                icon: _markerIconToUse,
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(

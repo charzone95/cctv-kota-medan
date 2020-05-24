@@ -36,5 +36,6 @@ flutter:
   assets:
     - assets/img/logo_text.png
     - assets/img/logo.png
+    - assets/img/marker.png
     - assets/img/logo_white.png
     - assets/img/loading_ellipsis.gif
