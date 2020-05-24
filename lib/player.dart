@@ -109,7 +109,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.title,
+          "Pantau CCTV",
           style: TextStyle(color: Colors.white),
         ),
         actions: <Widget>[
@@ -123,63 +123,78 @@ class _PlayerScreenState extends State<PlayerScreen> {
       ),
       body: Container(
         child: Center(
-          child: _isError
-              ? Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      "Gagal memutar video",
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    SizedBox(height: 8.0),
-                    OutlineButton(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Icon(Icons.report_problem),
-                          SizedBox(width: 4.0),
-                          Text("Laporkan masalah"),
-                        ],
-                      ),
-                      onPressed: () {
-                        _showReportDialog();
-                      },
-                    ),
-                  ],
-                )
-              : _isStarted
-                  ? PhotoView.customChild(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          AspectRatio(
-                            aspectRatio: _controller.value.aspectRatio,
-                            child: VideoPlayer(_controller),
-                          ),
-                          SizedBox(height: 8.0),
-                          Text(
-                              "Anda dapat mencubit layar untuk memperbesar video"),
-                        ],
-                      ),
-                      childSize: Size(
-                          MediaQuery.of(context).size.width,
-                          MediaQuery.of(context).size.width /
-                                  _controller.value.aspectRatio +
-                              32.0),
-                      minScale: 1.0,
-                      backgroundDecoration: BoxDecoration(color: Colors.white),
-                    )
-                  : Column(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                widget.title,
+                style: Theme.of(context).textTheme.headline5,
+                textAlign: TextAlign.center,
+              ),
+              _isError
+                  ? Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        CctvLoadingIndicator(),
-                        SizedBox(height: 8.0),
-                        _isStillWaiting
-                            ? Text("Masih menunggu video dari server...")
-                            : Container(),
+                        SizedBox(height: 60.0),
+                        Text(
+                          "Gagal memutar video",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        SizedBox(height: 36.0),
+                        OutlineButton(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Icon(Icons.report_problem),
+                              SizedBox(width: 4.0),
+                              Text("Laporkan masalah"),
+                            ],
+                          ),
+                          onPressed: () {
+                            _showReportDialog();
+                          },
+                        ),
                       ],
-                    ),
+                    )
+                  : _isStarted
+                      ? SizedBox(
+                          height: 400.0,
+                          child: PhotoView.customChild(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                AspectRatio(
+                                  aspectRatio: _controller.value.aspectRatio,
+                                  child: VideoPlayer(_controller),
+                                ),
+                                SizedBox(height: 8.0),
+                                Text(
+                                    "Anda dapat mencubit layar untuk memperbesar video"),
+                              ],
+                            ),
+                            childSize: Size(
+                                MediaQuery.of(context).size.width,
+                                MediaQuery.of(context).size.width /
+                                        _controller.value.aspectRatio +
+                                    32.0),
+                            minScale: 1.0,
+                            backgroundDecoration:
+                                BoxDecoration(color: Colors.white),
+                          ),
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            CctvLoadingIndicator(),
+                            SizedBox(height: 8.0),
+                            _isStillWaiting
+                                ? Text("Masih menunggu video dari server...")
+                                : Container(),
+                          ],
+                        ),
+            ],
+          ),
         ),
       ),
     );
