@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cctv_medan/CctvList.dart';
 import 'package:cctv_medan/models/Cctv.dart';
 import 'package:cctv_medan/player.dart';
 import 'package:cctv_medan/providers/CctvState.dart';
@@ -104,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text("CCTV Kota Medan"),
+                title: Text("List CCTV"),
                 content: Text(
                     "Aplikasi ini dibangun agar masyarakat yang memiliki waktu luang (seperti saya) dapat memantau arus lalu lintas di seputaran Kota Medan.\n\nLive streaming yang terdapat di aplikasi ini sepenunhnya merupakan milik ATCS Kota Medan.\n\n\n- Built with <3 with Flutter\nCharlie"),
                 actions: <Widget>[
@@ -121,6 +122,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: Text('CCTV Kota Medan', style: TextStyle(color: Colors.white)),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.list),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ChangeNotifierProvider<CctvState>.value(
+                      value: Provider.of<CctvState>(context),
+                      child: CctvListScreen(),
+                    ),
+                  ),
+                );
+              })
+        ],
       ),
       body: GoogleMap(
         mapType: MapType.normal,

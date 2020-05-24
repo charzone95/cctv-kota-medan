@@ -39,39 +39,11 @@ class _CctvListScreenState extends State<CctvListScreen> {
     if (displayedList == null) {
       displayedList = cctvState.listCctv;
     }
-    if (displayedList.isEmpty &&
-        !cctvState.isLoadingCctv &&
-        !cctvState.isErrorLoadCctv) {
-      Future.delayed(Duration(milliseconds: 50), () {
-        cctvState.fetchCctvData();
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(
-        leading: _isSearching
-            ? null
-            : IconButton(
-                icon: Icon(Icons.help_outline),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text("CCTV Kota Medan"),
-                      content: Text(
-                          "Aplikasi ini dibangun agar masyarakat yang memiliki waktu luang (seperti saya) dapat memantau arus lalu lintas di seputaran Kota Medan.\n\nLive streaming yang terdapat di aplikasi ini sepenunhnya merupakan milik ATCS Kota Medan.\n\n\n- Built with <3 with Flutter\nCharlie"),
-                      actions: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text("Oke sip!"),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+        leading: _isSearching ? null : BackButton(),
+        automaticallyImplyLeading: false,
         title: _isSearching
             ? TextField(
                 controller: _searchController,
@@ -87,8 +59,8 @@ class _CctvListScreenState extends State<CctvListScreen> {
                 style: TextStyle(color: Colors.white),
                 onChanged: _filterList,
               )
-            : Text('CCTV Kota Medan', style: TextStyle(color: Colors.white)),
-        centerTitle: _isSearching ? false : true,
+            : Text('List CCTV', style: TextStyle(color: Colors.white)),
+        centerTitle: false,
         actions: <Widget>[
           _isSearching
               ? IconButton(
@@ -120,6 +92,10 @@ class _CctvListScreenState extends State<CctvListScreen> {
                   : ListView.builder(
                       itemCount: displayedList.length,
                       itemBuilder: (context, index) => ListTile(
+                        leading: Image.asset(
+                          "assets/img/marker.png",
+                          height: 24.0,
+                        ),
                         title: Text(displayedList[index].name),
                         onTap: () {
                           var data = displayedList[index];
