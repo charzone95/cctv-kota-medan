@@ -34,4 +34,8 @@ class Cctv {
     data['status'] = this.status;
     return data;
   }
+
+  String toMarkerIdName() {
+    return "marker_" + this.name.toLowerCase().replaceAll(" ", "_");
+  }
 }
