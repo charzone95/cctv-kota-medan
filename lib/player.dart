@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 import 'components/loading_indicator.dart';
@@ -63,17 +66,87 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void _showReportDialog() {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Laporkan Masalah"),
+          content: Text(
+              "Mohon laporkan masalah yang terjadi berkaitan aplikasi ini dengan menekan tombol di bawah ini. Terima kasih"),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () async {
+                var phoneNumber = '+6285262379555';
+                var message =
+                    'Terjadi masalah saat memutar CCTV: ' + widget.title;
+                var whatsappUrl =
+                    "whatsapp://send?phone=$phoneNumber&text=$message";
+
+                if (await canLaunch(whatsappUrl)) {
+                  await launch(whatsappUrl);
+                } else {
+                  Fluttertoast.showToast(
+                    msg:
+                        "Gagal membuka WhatsApp. Pastikan WhatsApp telah terinstall.",
+                  );
+                }
+
+                Navigator.of(context).pop();
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(FontAwesomeIcons.whatsapp),
+                  SizedBox(width: 4.0),
+                  Text("Lapor via Whatsapp"),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           widget.title,
           style: TextStyle(color: Colors.white),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.report_problem),
+            onPressed: () {
+              _showReportDialog();
+            },
+          ),
+        ],
       ),
       body: Container(
         child: Center(
           child: _isError
-              ? Text("Gagal memutar video")
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      "Gagal memutar video",
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    SizedBox(height: 8.0),
+                    OutlineButton(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.report_problem),
+                          SizedBox(width: 4.0),
+                          Text("Laporkan masalah"),
+                        ],
+                      ),
+                      onPressed: () {
+                        _showReportDialog();
+                      },
+                    ),
+                  ],
+                )
               : _isStarted
                   ? PhotoView.customChild(
                       child: Column(

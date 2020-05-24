@@ -12,10 +12,12 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   provider: ^3.0.0+1
-  dio: ^2.1.13
+  dio: ^3.0.9
   video_player: ^0.10.1+5
   photo_view: ^0.4.2
-
+  font_awesome_flutter: ^8.8.1
+  url_launcher: ^5.4.10
+  fluttertoast: ^4.0.1
 
 dev_dependencies:
   flutter_test:
