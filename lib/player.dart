@@ -18,6 +18,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   VideoPlayerController _controller;
   bool _isStarted = false;
   bool _isError = false;
+  bool _isStillWaiting = false;
 
   @override
   void initState() {
@@ -30,7 +31,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
         setState(() {});
         _controller.play();
       }).timeout(
-        Duration(seconds: 5),
+        Duration(seconds: 10),
         onTimeout: () {
           if (mounted) {
             setState(() {
@@ -43,6 +44,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
           _isError = true;
         });
       });
+
+    Future.delayed(Duration(seconds: 5), () {
+      setState(() {
+        _isStillWaiting = true;
+      });
+    });
   }
 
   @override
@@ -78,17 +85,28 @@ class _PlayerScreenState extends State<PlayerScreen> {
                             child: VideoPlayer(_controller),
                           ),
                           SizedBox(height: 8.0),
-                          Text("Anda dapat mencubit layar untuk memperbesar video"),
+                          Text(
+                              "Anda dapat mencubit layar untuk memperbesar video"),
                         ],
                       ),
                       childSize: Size(
                           MediaQuery.of(context).size.width,
                           MediaQuery.of(context).size.width /
-                              _controller.value.aspectRatio + 32.0),
+                                  _controller.value.aspectRatio +
+                              32.0),
                       minScale: 1.0,
                       backgroundDecoration: BoxDecoration(color: Colors.white),
                     )
-                  : CctvLoadingIndicator(),
+                  : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        CctvLoadingIndicator(),
+                        SizedBox(height: 8.0),
+                        _isStillWaiting
+                            ? Text("Masih menunggu video dari server...")
+                            : Container(),
+                      ],
+                    ),
         ),
       ),
     );
