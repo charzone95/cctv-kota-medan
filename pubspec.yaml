@@ -21,6 +21,7 @@ dependencies:
   google_maps_flutter: ^0.5.28+1
   permission_handler: ^5.0.0+hotfix.6
   flutter_launcher_icons: 0.7.5
+  location: ^3.0.2
 
 dev_dependencies:
   flutter_test:

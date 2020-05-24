@@ -1,6 +1,5 @@
 import 'package:cctv_medan/CctvList.dart';
 import 'package:cctv_medan/HomeScreen.dart';
-import 'package:cctv_medan/player.dart';
 import 'package:cctv_medan/providers/CctvState.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

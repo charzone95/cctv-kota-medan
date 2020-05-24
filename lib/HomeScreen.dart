@@ -6,6 +6,7 @@ import 'package:cctv_medan/providers/CctvState.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -48,9 +49,31 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _requestLocationAccess();
 
+    _scrollToCurrentPosition();
+
     Future.delayed(Duration(milliseconds: 100), () {
       final cctvState = Provider.of<CctvState>(context);
       cctvState.fetchCctvData();
+    });
+  }
+
+  void _scrollToCurrentPosition() {
+    // create an instance of Location
+    var location = new Location();
+
+    // subscribe to changes in the user's location
+    // by "listening" to the location's onLocationChanged event
+    location.onLocationChanged.first.then((locationData) async {
+      final controller = await _controller.future;
+
+      controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(locationData.latitude, locationData.longitude),
+            zoom: _pusatMedan.zoom,
+          ),
+        ),
+      );
     });
   }
 
