@@ -31,27 +31,33 @@ class _PlayerScreenState extends State<PlayerScreen> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         _isStarted = true;
 
-        setState(() {});
-        _controller.play();
+        if (this.mounted) {
+          setState(() {});
+          _controller.play();
+        }
       }).timeout(
         Duration(seconds: 10),
         onTimeout: () {
-          if (mounted) {
+          if (this.mounted) {
             setState(() {
               _isError = true;
             });
           }
         },
       ).catchError((error) {
-        setState(() {
-          _isError = true;
-        });
+        if (this.mounted) {
+          setState(() {
+            _isError = true;
+          });
+        }
       });
 
     Future.delayed(Duration(seconds: 5), () {
-      setState(() {
-        _isStillWaiting = true;
-      });
+      if (this.mounted) {
+        setState(() {
+          _isStillWaiting = true;
+        });
+      }
     });
   }
 
