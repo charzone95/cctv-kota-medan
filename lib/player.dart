@@ -119,12 +119,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
           style: TextStyle(color: Colors.white),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.report_problem),
-            onPressed: () {
-              _showReportDialog();
-            },
-          ),
+//          IconButton(
+//            icon: Icon(Icons.report_problem),
+//            onPressed: () {
+//              _showReportDialog();
+//            },
+//          ),
         ],
       ),
       body: Container(
@@ -146,20 +146,20 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           "Gagal memutar video",
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
-                        SizedBox(height: 36.0),
-                        OutlineButton(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Icon(Icons.report_problem),
-                              SizedBox(width: 4.0),
-                              Text("Laporkan masalah"),
-                            ],
-                          ),
-                          onPressed: () {
-                            _showReportDialog();
-                          },
-                        ),
+//                        SizedBox(height: 36.0),
+//                        OutlineButton(
+//                          child: Row(
+//                            mainAxisSize: MainAxisSize.min,
+//                            children: <Widget>[
+//                              Icon(Icons.report_problem),
+//                              SizedBox(width: 4.0),
+//                              Text("Laporkan masalah"),
+//                            ],
+//                          ),
+//                          onPressed: () {
+//                            //_showReportDialog();
+//                          },
+//                        ),
                       ],
                     )
                   : _isStarted
