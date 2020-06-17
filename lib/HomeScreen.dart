@@ -146,6 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
         zoomControlsEnabled: false,
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
+        trafficEnabled: true,
         markers: cctvState.listCctv
             .map(
               (cctv) => Marker(
